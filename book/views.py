@@ -57,8 +57,9 @@ def index(request):
 #     render(request,)
 #     return HttpResponse('index')
 
-# 根据位置获取参数
+
 def detail(request, book_id, category_id):
+    # 根据位置获取参数
     # 1/100
     # print(category_id, book_id)
 
