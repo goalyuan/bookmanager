@@ -70,6 +70,7 @@ def detail(request, book_id, category_id):
      ？前边表示路由
      ？后边表示get方式传递的参数，称之为 查询字符串
      ?key=value&key=value...
+     
     """""
     # QueryDict和Dict区别，QueryDict一个键有可能多个值
     # params = request.GET
