@@ -125,3 +125,17 @@ def detail(request, book_id, category_id):
     # return redirect(path)
 
     return HttpResponse(data, status=400)
+
+
+def test(request, test_id):
+    return HttpResponse("test")
+
+
+def set_cookie(request):
+    # 第一次请求
+    # 1.先判断有没有cookie
+    # 2.获取用户名
+    username = request.GET.get('username')
+    # 3.因为我们没有假设没有cookie信息，我们服务器就要设置cookie信息
+    # 4.返回相应
+    return HttpResponse()

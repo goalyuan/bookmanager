@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from book.views import index, detail
+from book.views import index, detail, test
 
 urlpatterns = [
     url(r'^home/$', index, name='index'),
@@ -8,4 +8,5 @@ urlpatterns = [
     #根据位置获取url参数
     # url(r'(\d+)/(\d+)/', detail),
     url(r'(?P<category_id>\d+)/(?P<book_id>\d+)', detail),
+    url(r'(?P<test_id>\d+)', test),
 ]
