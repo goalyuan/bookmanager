@@ -112,10 +112,11 @@ def detail(request, book_id, category_id):
     # status HTTP status code must be an integer from 100 to 599.只能使用系统规定的
     # content_type 是一个MIME类
     # 语法形式 大类/小类 text/html image/jpg
+
     #####################JsonHttpResponse#####################
     from django.http import JsonResponse
     data = {"name": "test"}
-    return JsonResponse(data)
+    return JsonResponse(data, status=400)
 
     #####################跳转页面#####################
     # return redirect('http://www.baidu.com')
@@ -127,15 +128,55 @@ def detail(request, book_id, category_id):
     return HttpResponse(data, status=400)
 
 
-def test(request, test_id):
-    return HttpResponse("test")
-
-
+# 状态保持
+# http://127.0.0.1/set_cookie
 def set_cookie(request):
+    """
+    保存在客户端的数据cookie
+    cookie是基于域名（ip）的
+    0.概念
+    1.流程（原理）
+        第一次请求过程
+        1.浏览器第一次请求服务器的时候，不会携带任何cookie信息
+        2.服务器接收到请求之后，发现请求中没有任何cookie信息
+        3.服务器设置一个cookie，这个cookie设置在响应中
+        4.浏览器接收到这个响应后，发现响应中有cookie信息，浏览器会将cookie信息保存起来
+
+        第二次及其之后的过程
+        5.浏览器第二次请求及其之后的请求都会携带cookie信息
+        6.我们的服务器接收到请求之后，会发现请求中携带的cookie信息，这样的话就认识是谁的请求了
+    2.看效果
+    3.从http协议角度深入掌握cookie的流程（原理）
+        第一次
+            1.第一次请求服务器，不会携带任何cookie信息，请求头中没有任何cookie信息
+            2.服务器会为响应设置cookie信息，响应头中有set_cookie信息
+        第二次及其之后
+            3.第二次及其之后的请求都会懈怠cookie信息，请求头中有cookie信息
+            4.（可选）在当前我们的代码中，没有在响应头中设置cookie，所以响应头中没有set_cookie信息
+
+    """
     # 第一次请求
     # 1.先判断有没有cookie
+    # request.COOKIES
     # 2.获取用户名
     username = request.GET.get('username')
     # 3.因为我们没有假设没有cookie信息，我们服务器就要设置cookie信息
-    # 4.返回相应
-    return HttpResponse()
+    response = HttpResponse('set_cookie')
+    response.set_cookie('username', username)
+    # 4.返回响应
+
+    return response
+
+
+# http://127.0.0.1:8000/get_cookie
+def get_cookie(request):
+    """
+    第二次及其之后的过程
+        5.浏览器第二次请求及其之后的请求都会携带cookie信息
+        6.我们的服务器接收到请求之后，会发现请求中携带的cookie信息，这样的话就认识是谁的请求了
+    """
+    # 1.服务器可以接收（查看）cookie信息
+    cookies = request.COOKIES
+    # cookies就是一个字典
+    username = cookies.get('username')
+    return HttpResponse('get_cookie')
