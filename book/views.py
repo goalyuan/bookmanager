@@ -129,7 +129,7 @@ def detail(request, book_id, category_id):
 
 
 # 状态保持
-# http://127.0.0.1/set_cookie
+# http://127.0.0.1:8000/set_cookie?username=admin
 def set_cookie(request):
     """
     保存在客户端的数据cookie
@@ -151,8 +151,20 @@ def set_cookie(request):
             1.第一次请求服务器，不会携带任何cookie信息，请求头中没有任何cookie信息
             2.服务器会为响应设置cookie信息，响应头中有set_cookie信息
         第二次及其之后
-            3.第二次及其之后的请求都会懈怠cookie信息，请求头中有cookie信息
+            3.第二次及其之后的请求都会携带cookie信息，请求头中有cookie信息
             4.（可选）在当前我们的代码中，没有在响应头中设置cookie，所以响应头中没有set_cookie信息
+
+保存在服务器的数据叫session
+session需要依赖于cookie
+如果浏览器禁用了cookie，则session不能实现
+    0.概念
+    1.流程
+        第一次请求：
+            1.第一次请求携带一些（用户名/密码)，cookie没有任何信息
+            2.服务器接收
+    2.效果
+    3.从原理（http）角度
+
 
     """
     # 第一次请求
@@ -162,8 +174,11 @@ def set_cookie(request):
     username = request.GET.get('username')
     # 3.因为我们没有假设没有cookie信息，我们服务器就要设置cookie信息
     response = HttpResponse('set_cookie')
-    response.set_cookie('username', username)
+    response.set_cookie('username', username, max_age=3600)
     # 4.返回响应
+    # 删除cookie方式
+    # response.delete_cookie(key='username')
+    # response.set_cookie(key='username',value='admin',max_age=0)
 
     return response
 
@@ -179,4 +194,52 @@ def get_cookie(request):
     cookies = request.COOKIES
     # cookies就是一个字典
     username = cookies.get('username')
-    return HttpResponse('get_cookie')
+    return HttpResponse(username)
+
+
+# http://127.0.0.1:8000/set_session?username=admin&password=123
+def set_session(request):
+    """
+    保存在服务器的数据叫session
+    session需要依赖于cookie
+    如果浏览器禁用了cookie，则session不能实现
+        0.概念
+        1.流程
+            第一次请求：
+                1.第一次请求携带一些（用户名/密码)，cookie没有任何信息
+                2.服务器接收这个请求之后，进行用户名和密码的验证，验证没有问题可以设置session信息
+                3.在设置session信息的同时（session信息保存在服务端），服务器会在响应头设置一个sessionid的cookie信息(由服务器自己设置的)
+                4.客户端（浏览器）在接收到响应之后，会将cookie信息保存起来（保存sessionid的信息）
+            第二次及其之后的请求：
+                5.第二次及其之后的请求都会携带sessionid信息
+                6.当服务器接收到这个请求之后，会获取到sessionid信息，然后进行验证，验证成功则获取sessionid信息
+        2.效果
+            第一次请求：
+                1.
+        3.从原理（http）角度
+    """
+    # 1.
+    print(request.COOKIES)
+    # 2.对用户名和密码进行验证
+    # 假设认为用户名和密码正确
+    user_id = 6666
+    # 3.设置session信息
+    request.session['user_id'] = user_id
+    # 4.返回响应
+    return HttpResponse('set_session')
+
+
+def get_session(request):
+    """
+    第二次及其之后的请求：
+                5.第二次及其之后的请求都会携带sessionid信息
+                6.当服务器接收到这个请求之后，会获取到sessionid信息，然后进行验证，验证成功则获取sessionid信息
+    """
+    # 1.请求都会携带sessionid信息
+    print(request.COOKIES)
+    # 2.会获取到sessionid信息，
+    # 然后进行验证，验证成功则获取sessionid信息
+    # request.session是字典
+    user_id = request.session['user_id']
+    user_id = request.session.get('user_id')
+    return HttpResponse('get_session')

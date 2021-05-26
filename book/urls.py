@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from book.views import index, detail, set_cookie, get_cookie
+from book.views import index, detail, set_cookie, get_cookie, set_session, get_session
 
 urlpatterns = [
     url(r'^home/$', index, name='index'),
@@ -13,4 +13,7 @@ urlpatterns = [
     url(r'^set_cookie', set_cookie),
     # cookie第二次及其之后的请求
     url(r'^get_cookie', get_cookie),
+    #
+    url(r'^set_session', set_session),
+    url(r'^get_session', get_session),
 ]
