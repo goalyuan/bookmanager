@@ -24,8 +24,6 @@ def index(request):
 
     登录成功之后跳转到首页
     注册成功之后跳转到首页
-    :param request:
-    :return:
     """
     path = reversed('index')
     print(path)
@@ -243,3 +241,24 @@ def get_session(request):
     user_id = request.session['user_id']
     user_id = request.session.get('user_id')
     return HttpResponse('get_session')
+
+
+"""
+面向对象
+    类视图 是采用的面向对象的思路 
+    1.定义类视图
+        1.继承自 View (from django.views import View)
+        2.不同的请求方式有不同的业务逻辑
+            类视图的方法就直接用http的请求名字作为我们的函数名，例如get，post
+        3.类视图的方法的第二个参数，必须是请求实例对象
+            类视图的方法必须有返回值，返回值是HttpResponse及其子类
+"""
+from django.views import View
+
+
+class LoginView(View):
+    def get(self, request):
+        return HttpResponse('get')
+
+    def post(self):
+        return HttpResponse('post')
