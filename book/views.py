@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
@@ -262,3 +263,28 @@ class LoginView(View):
 
     def post(self):
         return HttpResponse('post')
+
+
+#####################模板#####################
+class HomeView(View):
+    def get(self, request):
+        # 1.获取数据
+        username = request.GET.get('username')
+        # 2.组织数据
+        context = {
+            'username': username,
+            'age': 14,
+            'birthday': datetime.now(),
+            'friends': ['tom', 'jack', 'rose'],
+            'scores': {
+                '2019': 100,
+                '2020': 99
+            },
+            'desc': '<script>alert("hot")</script>',
+        }
+        # return render(request, 'index.html', context=context)
+        return render(request, 'detail.html')
+
+
+
+

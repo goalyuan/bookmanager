@@ -1,8 +1,8 @@
 from django.conf.urls import url
-from book.views import index, detail, set_cookie, get_cookie, set_session, get_session, LoginView
+from book.views import index, detail, set_cookie, get_cookie, set_session, get_session, LoginView, HomeView
 
 urlpatterns = [
-    url(r'^home/$', index, name='index'),
+    url(r'^home/$', index, name='home'),
     # 127.0.0.1:8000/1/100
     # url(r'(1)/(100)/', detail),
     # 根据位置获取url参数
@@ -21,4 +21,5 @@ urlpatterns = [
     # url的第一个参数是正则
     # url的第二个参数是视图函数名
     url(r'^login/$', LoginView.as_view()),
+    url(r'^index/$', HomeView.as_view()),
 ]

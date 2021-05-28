@@ -5,11 +5,39 @@
     <title>Title</title>
 </head>
 <body>
-<a href="#">{{ name }}</a>
-<ul>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-</ul>
+<a href="#">{{ username }}</a>
+<hr>
+我的年龄是{{ age }}
+<hr>
+我总共有{{ friends|length }}个朋友，我的朋友是{{ friends }}
+<hr>
+我的nv朋友是{{ friends.2 }}
+<hr>
+我的分数是{{ scores.2019 }}
+<hr>
+我的朋友是
+<ur>
+    {% for friend in friends %}
+        <li>{{ forloop.counter }}.{{ friend }}</li>
+    {% endfor %}
+</ur>
+<hr>
+{% if age >= 18 %}
+    成年人
+{% else %}
+    未成年人
+{% endif %}
+
+
+{#单行注释#}
+{% comment %}
+多行注释
+{% endcomment %}
+<hr>
+我的生日是{{ birthday }}
+<hr>
+我的简介是{{ desc|safe }}
+<hr>
+我没有定义的变量{{ adcd|default:'我就是默认值~' }}
 </body>
 </html>

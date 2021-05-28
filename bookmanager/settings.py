@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # '子应用名.apps.子应用名Config'
 ]
 
+# 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,11 +68,13 @@ ROOT_URLCONF = 'bookmanager.urls'
 # 和模板相关的配置信息
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'BACKEND': 'django.template.backends.django.DjangoTemplates',#默认引擎
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',  # 修改为Jinjia2模板引擎
         # 设置模板路径
         'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
+            # 'environment': 'jinja2.Environment',#默认的
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
